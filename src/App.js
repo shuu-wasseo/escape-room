@@ -11,6 +11,8 @@ import electrical from './electrical.jpeg'
 import password from './password.jpeg'
 import surfaced from './surfaced.jpeg'
 
+import bytes from './bytes.png'
+
 import shape0 from './shape0.svg'
 import shape1 from './shape1.svg'
 import shape2 from './shape2.svg'
@@ -123,8 +125,9 @@ function Clues(props) {
   return (
     <div className="clues">
       <h1>clues</h1>
-      {props.clues.map(i => (
-        <div className="clues">
+      <img className="clue" src={props.clues[0]} style={{width: "90%"}}/>
+      {props.clues.slice(1).map(i => (
+        <div className="clue">
           {i} 
         </div>
       ))}
@@ -137,7 +140,7 @@ function App() {
   const [logs, setLogs] = useState([])
   const [clues, setClues] = useState([])
   const [narration, setNarration] = useState("# welcome to the game. to start, press the START button.")
-  const [part, setPart] = useState(2)
+  const [part, setPart] = useState(0)
   const [audioHintGiven, setAudioHintGiven] = useState(false)
   
   useEffect(() => {
@@ -167,6 +170,11 @@ good luck.
         }, logs, setLogs)
         break
       case 2:
+        setClues(clues.concat([bytes]))
+        newLog({
+          text: "clue dropped!",
+          source: "finished part 1"
+        }, logs, setLogs)
         setNarration(`the airlock hisses, revealing a nightmare. sunlight blazes through a gaping hull wound, warping metal grotesquely. groans and hisses replace the ship's hum as the hull strains in space's grip. frigid, metallic air whips at your face. a toolbox falls. this is a hell check, not a hull check.
 
 **objective: press the correct squares in the right order to fix the hull.**
@@ -177,6 +185,11 @@ good luck.
         }, logs, setLogs)
         break
       case 3:
+        setClues(clues.concat(["a2V5IG1vbnRoIG9mZnNldCBkYXkgKGhpbnQ6IGNvbnRyb2wgcm9vbSBoYXRjaCBwYXNzd29yZCk="]))
+        newLog({
+          text: "clue dropped!",
+          source: "finished part 2"
+        }, logs, setLogs)
         setNarration(`as you enter the dimly lit electrical room, you're met with a daunting array of wires and machinery. with a sense of urgency, you realize that restoring power is crucial for your escape. despite the overwhelming task ahead, you steel yourself and with each careful decision, you edge closer to success, knowing that failure is not an option in your quest for freedom.
 
 **objective: drag the color wheel to fix the wires.**
@@ -187,6 +200,11 @@ good luck.
         }, logs, setLogs)
         break
       case 4:
+        setClues(clues.concat(["oeerw vnreu tfe h oeisotsfiv n i gteexh"]))
+        newLog({
+          text: "clue dropped!",
+          source: "finished part 3"
+        }, logs, setLogs)
         setNarration(`reaching control, your grip tightens on the handle. a surge of adrenaline fuels you as the heavy door swings open, revealing the mission's nerve center. the familiar hum of computers fills the air, illuminating the focused faces of the control team. relief washes over you - you're not alone. determined strides take you to your station, ready to contribute.
 
 **objective: enter the password. here's a hint: the clues panel on your left.**
@@ -309,7 +327,7 @@ good luck.
               </div>
               <input id="pin" placeholder="enter PIN... (y4m2d2)"/>
               <button onClick={() => submit("pin", "20230618")}>submit</button>
-              <p>{error}</p>
+              <p style={{color: "red"}}>{error}</p>
             </div>
           )
         } else if (round === 1) {
@@ -322,7 +340,7 @@ good luck.
               </div>
               <input id="password" placeholder="enter password..."/>
               <button onClick={() => submit("password", "titanic implosion")}>submit</button>
-              <p>{error}</p>
+              <p style={{color: "red"}}>{error}</p>
             </div>
           )
         }
@@ -389,11 +407,11 @@ good luck.
         )
       case 4:
         return (
-          <div className="game" style={{backgroundImage: `linear-gradient(rgba(40,44,52,0.69), rgba(40,44,52,0.69)), url(${controlPanel})`}}>
+          <div className="game" style={{backgroundImage: `linear-gradient(rgba(40,44,52,0.69), rgba(40,44,52,0.69)), url(${password})`}}>
             <h1>control panel</h1>
             <input id="control-password" placeholder="enter password..."/>
             <button onClick={() => submit("control-password", "ovrrdPrssur3")}>submit</button>
-            <p>{error}</p>
+            <p style={{color: "red"}}>{error}</p>
           </div>
         )
       case 5:

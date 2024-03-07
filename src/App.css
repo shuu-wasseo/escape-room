@@ -89,6 +89,7 @@ body {
 .clues {
   float: left;
   border-right: 1px solid white;
+  padding: 10px;
 }
 
 .log {
@@ -96,6 +97,11 @@ body {
   grid-template-columns: 1fr 9fr;
   column-gap: 10px;
   margin: 10px auto
+}
+
+.clue {
+  margin: 10px auto;
+  overflow-wrap: break-word 
 }
 
 .body {
