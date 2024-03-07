@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect, useRef, forceUpdate } from 'react'
 import Markdown from 'react-markdown'
+import { animated } from 'react-spring';
 
 import speaker from './speaker.jpeg'
 import submarine from './submarine.jpeg'
@@ -10,6 +11,7 @@ import hull from './hull.png'
 import electrical from './electrical.jpeg'
 import password from './password.jpeg'
 import surfaced from './surfaced.jpeg'
+import wreck from './wreck.jpeg'
 
 import bytes from './bytes.png'
 
@@ -23,9 +25,11 @@ import shape6 from './shape6.svg'
 import shape7 from './shape7.svg'
 import shape8 from './shape8.svg'
 import arrowhead from './arrowhead.png'
+import heart from './heart.svg'
+import brokenHeart from './broken_heart.svg'
 
 import morsecode from './morsecode.wav'
-
+import ocean from './ocean.mp3'
 
 function getNonHiddenProperties(obj) {
   const nonHiddenProperties = [];
@@ -139,9 +143,10 @@ function App() {
   const [started, setStarted] = useState(false)
   const [logs, setLogs] = useState([])
   const [clues, setClues] = useState([])
-  const [narration, setNarration] = useState("# welcome to the game. to start, press the START button.")
+  const [narration, setNarration] = useState("# welcome aboard the AQUA.")
   const [part, setPart] = useState(0)
   const [audioHintGiven, setAudioHintGiven] = useState(false)
+  const [lives, setLives] = useState(3)
   
   useEffect(() => {
     if (!started) {
@@ -153,6 +158,7 @@ function App() {
         text: "any actions you take in this escape room will show up here!",
         source: "welcome"
       }, logs, setLogs)
+      new Audio(ocean).play()
       setStarted(true)
     }
     switch(part) {
@@ -243,12 +249,13 @@ good luck.
             setPart(2)
           }
         }
-      } else {
+      } else if (answer) {
         newLog({
           text: `${id} ${clicked} invalid`,
           source: `part ${part} wrong`
         }, logs, setLogs)
         setError("wrong answer.")
+        setLives(lives - 1)
       }
     }
 
@@ -268,6 +275,7 @@ good luck.
               text: `combination [${clicked.join(",")}] invalid`,
               source: "part 2 wrong"
             }, logs, setLogs)
+            setLives(lives - 1)
             setClicked([]); // Reset clicked based on latest state
           } else if (twoArraysEqual(clicked, [0, 3, 5, 8])) {
             setPart(3)
@@ -286,6 +294,7 @@ good luck.
                 text: `combination invalid`,
                 source: "part 3 wrong"
               }, logs, setLogs)
+              setLives(lives - 1)
               setClicked([])
               wrong = true
               break
@@ -299,12 +308,17 @@ good luck.
       }
     }, [clicked]); // Update effect when clicked or background changes
 
+    useEffect(() => {
+      if (lives <= 0) {
+        setPart(6)
+      }
+    }, [lives])
+
 
     switch(part) {
       case 0:
         return (
           <div className="game" style={{backgroundImage: `linear-gradient(rgba(40,44,52,0.69), rgba(40,44,52,0.69)), url(${submarine})`}}>
-            <h1>submarine escape</h1>
             <button className="start" onClick={() => {setPart(1)}}>start</button>
           </div>
         )
@@ -335,7 +349,7 @@ good luck.
             <div className="game" style={{backgroundImage: `linear-gradient(rgba(40,44,52,0.69), rgba(40,44,52,0.69)), url(${controlPanel})`}}>
               <h1>hatch: layer 2</h1>
               <div className="hint">
-                <h2>hint:</h2>
+                <h2>hint</h2>
                 <p>kzkrezt zdgcfjzfe</p>
               </div>
               <input id="password" placeholder="enter password..."/>
@@ -421,7 +435,28 @@ good luck.
             <h1>good luck floating on the water for the next few months</h1>
           </div>
         )
+      case 6:
+        return (
+          <div className="game" style={{backgroundImage: `linear-gradient(rgba(40,44,52,0.69), rgba(40,44,52,0.69)), url(${wreck})`}}>
+            <h1>game over</h1>
+            <h1>you died</h1>
+          </div>
+        )
     }
+  }
+
+  function Lives(props) {
+    return (
+      <div className="lives">
+        {
+          [...Array(3).keys()].map(i => {
+            console.log(i)
+            return <img className="heart" src={i >= props.lives ? brokenHeart : heart} />
+          })
+        }
+        <h2>{lives > 0 ? "you lose a life everytime you get a puzzle wrong. if you lose all three, the submarine will explode." : "meh i told you"}</h2>
+      </div>
+    )
   }
 
   return (
@@ -430,6 +465,7 @@ good luck.
       <div className="body">
         <Markdown className="narration">{narration}</Markdown>
         <Game part={part}/>
+        <Lives lives={lives}/>
       </div>
       <Logs logs={logs}/>
     </div>
