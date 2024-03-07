@@ -452,7 +452,7 @@ good luck.
             return <img className="heart" src={i >= props.lives ? brokenHeart : heart} />
           })
         }
-        <h2>{lives > 0 ? "you lose a life everytime you get a puzzle wrong. if you lose all three, the submarine will explode." : "meh i told you"}</h2>
+        <h3>{lives > 0 ? "you lose a life everytime you get a puzzle wrong. if you lose all three, the submarine will explode." : "meh i told you"}</h3>
       </div>
     )
   }
