@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, forceUpdate } from 'react'
 import Markdown from 'react-markdown'
 import { animated } from 'react-spring';
 
-import speaker from './speaker.jpeg'
 import submarine from './submarine.jpeg'
 import controlPanel from './controlpanel.jpeg'
 import hull from './hull.png'
@@ -329,7 +328,6 @@ good luck.
               <h1>hatch: layer 1</h1>
               <div className="hint">
                 <h2>listen to hint below</h2> 
-                <img src={speaker}/>
                 <audio controls onClick={() => {
                   if (!audioHintGiven) {
                     newLog({text: "morse code hint given", source: "morse code hint"}, logs, setLogs)

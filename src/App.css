@@ -141,13 +141,13 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  height: 70%;
   background-size: 100% 100%;
   border-bottom: 1px solid white;
 }
 
 .game > * {
-  margin: 20px
+  margin: 1vh 
 }
 
 .hint {
@@ -156,7 +156,7 @@ body {
 }
 
 .narration {
-  max-height: 25vh;
+  height: fit-content;
   border-bottom: 1px solid white;
   overflow: scroll;
   padding: 20px;
@@ -209,7 +209,7 @@ body {
 }
 
 .lives {
-  padding: 20px;
+  padding: 1vh;
 }
 
 .heart {
